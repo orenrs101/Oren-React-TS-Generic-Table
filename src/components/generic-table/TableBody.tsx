@@ -7,7 +7,9 @@ const TableBody = <T, KEY extends keyof T>({ columns, data }: ITableRowsProps<T,
         return (
             <tr className='table-body-row' key={`row-${idx1}`}>
                 {columns.map((column: ColumnDefinitionType<T, KEY>, idx2: number) => {
-                    const cellData = (row[column.key]) ? (row[column.key]) : "--" ;
+                    //If value is missing (but not 0 number)
+                    const cellData = (row[column.key] || typeof row[column.key] === "number") ? (row[column.key]) : "----" ;
+
                     return (
                         <td key={`cell-${idx2}`}>
                             {/*@ts-ignore*/}

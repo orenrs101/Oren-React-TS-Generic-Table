@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap');
+@import "../../styles/colors";
+
+.table-header {
+  font-size: 12px;
+  height: 45px;
+  background-color: $header-color;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: 'Lato', sans-serif;
+
+  th {
+    border-right: 1px solid #fff;
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 & 11 */
+
+    &.selected-header {
+      background-color: $selected-header-color;
+    }
+
+    .sorting-icon {
+      margin: 0 5px 0 10px;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+  }
+}

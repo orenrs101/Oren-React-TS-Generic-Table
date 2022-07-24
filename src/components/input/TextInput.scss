@@ -1,0 +1,14 @@
+.text-input {
+  color: #565454;
+  background-color: #fff;
+  //height: 35px;
+  height: 1em;
+  margin-left: 5px;
+  border-radius: 8px;
+  border: none;
+  padding: 5px;
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -5,7 +5,7 @@ import './Table.scss';
 import { filterByKeyString, sortListByKey } from "../../utilities/array-utils";
 import { ColumnDefinitionType } from "../../entities/models/models";
 import { eSortDirection } from "../../entities/models/enums";
-import { TableDataContext } from "../../context/TableDataContext";
+import { TableDataLengthContext } from "../../context/TableDataContext";
 
 const Table = <T, KEY extends keyof T>({ columns, data }: ITableProps<T, KEY>) => {
 
@@ -20,6 +20,7 @@ const Table = <T, KEY extends keyof T>({ columns, data }: ITableProps<T, KEY>) =
 
     const filterTableList = (input:string, key: KEY) => {
         let filteredList:T[] = filterByKeyString([...data], key ,input);
+
         if(_sortKey.current && _sortOrder.current) {
             filteredList = sortListByKey(filteredList, _sortKey.current, _sortOrder.current)
         }
@@ -38,18 +39,16 @@ const Table = <T, KEY extends keyof T>({ columns, data }: ITableProps<T, KEY>) =
 
     return (
         <>
-            <TableDataContext.Provider value={{dataList}}>
-
+            <TableDataLengthContext.Provider value={{tableDataLength: dataList.length}}>
                 <table className="table">
                     <TableHeader
                         columns={columns}
                         filterHandler={filterTableList}
                         handleSorting={handleSorting}
                     />
-                    <TableBody columns={columns} />
+                    <TableBody columns={columns} data={dataList} />
                 </table>
-
-            </TableDataContext.Provider>
+            </TableDataLengthContext.Provider>
 
             {(!dataList.length) ? <h3 className='no-data'>No Data To Display</h3> : null}
         </>

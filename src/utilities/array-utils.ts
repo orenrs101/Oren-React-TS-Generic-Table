@@ -19,10 +19,9 @@ export const sortListByKey = <T, KEY extends keyof T>(arr: T[], key: KEY, order:
 
 export const filterByKeyString = <T, KEY extends keyof T>(arr: T[], key: KEY, input:string): T[] => {
     return arr.filter((item:T) => {
-        let val:string = item[key] as unknown as string;
-        return val.toLowerCase().includes(input.toLowerCase());
-        // if(typeof item[key] === "string") {
-        //
-        // }
+        if(typeof item[key] === "string") {
+            let val:string = item[key] as unknown as string;
+            return val.toLowerCase().includes(input.toLowerCase());
+        }
     });
 }

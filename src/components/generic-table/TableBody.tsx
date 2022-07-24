@@ -1,12 +1,9 @@
 import './TableBody.scss';
 import { ColumnDefinitionType } from "../../entities/models/models";
-import { useContext } from "react";
-import { ITableContextProps, TableDataContext } from "../../context/TableDataContext";
 
 const TableBody = <T, KEY extends keyof T>({ columns, data }: ITableRowsProps<T, KEY>) => {
-    const {dataList} = useContext(TableDataContext) as ITableContextProps<T>;
 
-    const rows = dataList.map((row:T, idx1: number) => {
+    const rows = data.map((row:T, idx1: number) => {
         return (
             <tr className='table-body-row' key={`row-${idx1}`}>
                 {columns.map((column: ColumnDefinitionType<T, KEY>, idx2: number) => {
@@ -29,5 +26,5 @@ export default TableBody;
 
 export interface ITableRowsProps<T, KEY extends keyof T> {
     columns: ColumnDefinitionType<T, KEY>[];
-    data?: T[]; //Conditional property since I'm using context. switch to required if removing context
+    data: T[];
 }

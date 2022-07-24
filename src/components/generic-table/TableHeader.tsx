@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import TextInput from "../input/TextInput";
 import { ColumnDefinitionType } from "../../entities/models/models";
-import { ITableContextProps, TableDataContext } from "../../context/TableDataContext";
+import { ITableContextProp, TableDataLengthContext } from "../../context/TableDataContext";
 
 const TableHeader = <T, KEY extends keyof T>({ columns, filterHandler, handleSorting }: ITableHeaderProps<T, KEY>) => {
 
@@ -15,7 +15,7 @@ const TableHeader = <T, KEY extends keyof T>({ columns, filterHandler, handleSor
     const [sortKey, setSortKey] = useState<KEY>();
     const [order, setOrder] = useState<eSortDirection>(eSortDirection.asc);
 
-    const { dataList } = useContext(TableDataContext) as ITableContextProps<T>; //for display sort purpose
+    const { tableDataLength } = useContext(TableDataLengthContext) as ITableContextProp; //for toggling sort-icons
 
 ////////////////////////////////////////////////////==Handlers==////////////////////////////////////////////////////////
 
@@ -35,7 +35,7 @@ const TableHeader = <T, KEY extends keyof T>({ columns, filterHandler, handleSor
             width: column.width ?? 80,
         };
 
-        const classNames:string = `sorting-icon ${(!dataList.length) ? 'hidden' : ''}`;
+        const classNames:string = `sorting-icon ${(!tableDataLength) ? 'hidden' : ''}`;
 
         const sortingIcon = (column.sortable)
                 ? (sortKey === column.key && order ===  eSortDirection.asc)
@@ -46,13 +46,12 @@ const TableHeader = <T, KEY extends keyof T>({ columns, filterHandler, handleSor
                 : null;
 
         //Assuming headers won't change within a table - using index for key is fine.
-        // @ts-ignore
         return (
             <th
                 key={`headCell-${index}`}
                 style={defaultStyle} className={`${(sortKey === column.key) ? 'selected-header' : ''}`}
                 tabIndex={index+1}
-                onClick={(column.sortable && dataList.length) ? () => handleSortingChange(column.key) : undefined}
+                onClick={(column.sortable && tableDataLength) ? () => handleSortingChange(column.key) : undefined}
             >
                 <label>{column.title}</label>
                 {sortingIcon}

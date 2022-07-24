@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
-export const TableDataContext = createContext<ITableContextProps<any> | null>(null);
+export const TableDataLengthContext = createContext<ITableContextProp | null>(null);
 
-export interface ITableContextProps<T>{
-    dataList: T[];
+export interface ITableContextProp {
+    tableDataLength: number
 }

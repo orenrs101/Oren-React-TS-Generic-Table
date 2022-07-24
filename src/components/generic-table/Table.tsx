@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import TableHeader from "./TableHeader";
 import TableBody from "./TableBody";
 import './Table.scss';
@@ -9,6 +9,9 @@ import { TableDataContext } from "../../context/TableDataContext";
 
 const Table = <T, KEY extends keyof T>({ columns, data }: ITableProps<T, KEY>) => {
 
+    const _sortKey = useRef<KEY | null>(null);
+    const _sortOrder = useRef<eSortDirection | null>(null);
+
 ////////////////////////////////////////////////====States====//////////////////////////////////////////////////////////
 
     const [dataList, setDataList] = useState<T[]>(data);
@@ -16,12 +19,17 @@ const Table = <T, KEY extends keyof T>({ columns, data }: ITableProps<T, KEY>) =
 ////////////////////////////////////////////////====Handlers====////////////////////////////////////////////////////////
 
     const filterTableList = (input:string, key: KEY) => {
-        const filteredList:T[] = filterByKeyString([...data], key ,input);
+        let filteredList:T[] = filterByKeyString([...data], key ,input);
+        if(_sortKey.current && _sortOrder.current) {
+            filteredList = sortListByKey(filteredList, _sortKey.current, _sortOrder.current)
+        }
         setDataList(filteredList);
     };
 
     const handleSorting = (sortKey:KEY, order:eSortDirection) => {
         if (sortKey) {
+            _sortKey.current = sortKey;
+            _sortOrder.current = order;
             setDataList(sortListByKey(dataList, sortKey, order));
         }
     };
